@@ -1,26 +1,26 @@
 # WINT (browser digital signage system)
 
-これはブラウザだけで利用できるデジタルサイネージシステムです。画面にはコンテンツ表示部とニュース表示部の二つの表示部があることで複数の情報を配信することができます。表示できるコンテンツは画像だけでなくHTMLも表示でき、表示時に逐次コンテンツを取得するため内容が動的なコンテンツの表示も可能です。コンテンツ表示部とニュース表示部で表示する内容は表示スケジュールを一巡するごとに必要に応じて更新させるため、システムを止めずに表示内容を変更することが可能です。
+This is a digital signage system that is available in only browser. It is possible to deliver a plurality of information by the display unit there are two news display part and the content display section on the screen. Contents can be also display dynamic content for content that can be displayed can also display HTML not only the image, to get the content sequentially display. In order to be updated as necessary each time around the display schedule, content with news display part and the content display unit is possible to change the display contents without stopping the system.
 
-## デモ
+## Demo
 
 [http://web.sfc.wide.ad.jp/~ema/wint/](http://web.sfc.wide.ad.jp/~ema/wint/)
 
-## 設置方法
+## Installation method
 
-config.jsのcontentJsonUrlおよびnewsJsonUrlに表示スケジュールを示すJSONファイルのURLを記述し、このディレクトリをサーバ上に公開します。その後、Google Chromeで公開されたディレクトリにアクセスしてください。Google Chromeでのフルスクリーン表示はWindowsではF11キー、Macintoshではshift + command + Fで出来ます。
+Write the URL of the JSON file that shows the display schedule to newsJsonUrl and contentJsonUrl of config.js, to publish on the server this directory. Please access the directory then, has been published in Google Chrome. I can F11 key on Windows, and shift + command + F on the Macintosh full screen display in Google Chrome.
 
-本システムでは、サーバサイドプログラミングを一切利用していないため、サーバ上での特殊な環境設定を必要としません。
+Because in this system, you are not using any server-side programming, and does not require any special environmental settings on the server.
 
-## 設定の編集
+## Edit Settings
 
-config.jsにはスケジュールファイルのURLおよびコンテンツ部、ニュース部の表示内容切替時のアニメーションの設定などが記述されています。また、style.cssではコンテンツ部、ニュース部の文字、大きさ、余白の背景などを指定しています。環境にあわせてこれらの値を変更してください。
+such as setting the animation of the display content when switching content portion and the URL of the schedule file, the news section has been described in the config.js. Also, I have specified character content section in style.css, the news section, size, and background of the margin. Please change these values ​​to suit your environment.
 
-## スケジュールを指定する
+## I want to specify a schedule
 
-コンテンツやニュースの表示スケジュールはconfig.jsのcontentJsonUrlとnewsJsonUrlのURLから得られるJSONの出力を元に解釈します。このJSONのフォーマットは下記のようになります。なお、本コード内ではこのJSONはファイルとして保持されているため時間経過に伴う変更はないスケジュールになっておりますが、別途、サーバサイドプログラミングでJSONを出力するプログラムを開発することでスケジュールを動的に変更できるようなシステムが完成します。
+Display schedule and news content will interpret on the basis of the output of the JSON obtained from the URL of newsJsonUrl and contentJsonUrl of config.js. The format of this JSON will be as follows. In addition, we now schedule does not change it over time for this JSON is held as a file in the code but, separately, the dynamic schedule by developing a program that outputs a JSON server-side programming Such systems can be changed basis will be completed.
 
-### コンテンツスケジュールのJSON仕様
+### JSON specification of content schedule
 
     [
         {
@@ -37,14 +37,14 @@ config.jsにはスケジュールファイルのURLおよびコンテンツ部�
 
 <dl>
 <dt>duration</dt>
-<dd>コンテンツの表示時間の長さ、単位は秒</dd>
+<dd>The length of the display time of the content, in seconds</dd>
 <dt>type</dt>
-<dd>iframeもしくはimg</dd>
+<dd>img or iframe</dd>
 <dt>url</dt>
-<dd>コンテンツが存在するURL</dd>
+<dd>URL that content exists</dd>
 </dl>
 
-### ニューススケジュールのJSON仕様
+### JSON specification of News Schedule
 
     [
         "text1",
@@ -52,18 +52,19 @@ config.jsにはスケジュールファイルのURLおよびコンテンツ部�
         "text3"
     ]
 
-## テスト環境
+## Test environment
 
-本プログラムはGoogle Chrome バージョン 25.0.1364.160(Mac OS X)にて起動を確認しています。
+This program has confirmed the launch at the (Mac OS X) Google Chrome version 25.0.1364.160.
 
-## ライセンス
+## License
 
-MITライセンスに準じています。利用にあたってlicense.txtを参照してください。
+I am according to the MIT license. Please refer to the license.txt in use.
 
-## 開発・運用上の仕様
+## Specifications of the development and operation on
 
-* コンテンツ、ニュースのスケジュールファイルは各スケジュールの最後の表示時に再取得します。そのためスケジュールの編集が即座に反映されるわけでありません。
-* コンテンツ部の表示の大きさは縦横比を保ったまま、画面を超過しないように拡大化しています。
-* スケジュールを示すJSONの取得にはキャッシュ対策のため、取得時にURLの末尾に「'?timestamp='+日時」もしくは「'&timestamp='+日時」を追加してURLを変更しています。デリミタが?であるか&であるかの判定は、スケジュールファイルのURLに?の文字が含まれているか否かで判定しています。
-* コンテンツを表示している際に、バックグラウンドで次に表示すべきコンテンツを取得する仕様になっています。このため、コンテンツ表示の段階でコンテンツを受信しないため、スムーズが画面の切り替えが可能になっております。稀にコンテンツの受信速度が遅いと次のコンテンツがスムーズに表示されないことがありますが、こういった場合はコンテンツを所有するサーバとの回線環境等を調整してください。
-* HTMLページの表示にはHTMLタグのiframeを用いています。そのため、表示先ページにてHTTPヘッダ"X-Frame-Options"が"deny"にセットされている場合、表示することができません。
+*I will re-acquire the display when the end of each schedule schedule file content, news. Edit the schedule is not necessarily be reflected immediately for that.
+*The size of the display of the content section while maintaining the aspect ratio, it has expanded into so as not to exceed the screen.
+*For cache measures, we change the URL by adding or "'? Timestamp =' + date and time" and "'& timestamp =' + date and time" to the end of the URL at the time of acquisition to retrieve the JSON indicating the schedule. The determination of whether delimiter is and whether it is?, I am determined character? On whether or not are included in the URL of the schedule file.
+*When you are viewing the content, it is the specification to get the content to be displayed next in the background. Therefore, because it does not receive the content at the stage of the content display, smooth becoming possible to switch the screen. There is that the content of the following does not appear in the smooth reception rate of the content is slow rarely, please adjust the line environment, such as with the server that owns the content if you have these.
+*I am using an iframe of HTML tags to display the HTML page. Therefore, if it is set to "deny" the HTTP header "X-Frame-Options" on the display destination page, you will not be able to be displayed.
+
